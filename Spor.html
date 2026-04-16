@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rain Animation</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body{
+      margin: 0;
+      overflow: hidden;
+      background-image: url("https://c8.alamy.com/comp/2FJTF3T/eid-festival-vector-illustration-background-eid-mubarak-banner-design-elegant-wallpaper-design-2FJTF3T.jpg");
+      background-size: cover;
+    }
+    body::before {
+     content: "";
+      position: absolute;
+       top: 0;
+       left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgb(0, 0,0, 0.4); /* darkness */
+      z-index: 1;
+    }
+    
+    .container-fluid{
+      max-width: 1230px;
+      margin: auto;
+      margin-top: 25vh;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1{
+      color: white;
+      text-align: center;
+    }
+
+  
+    .rain{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .drop{
+      position: absolute;
+      top: 0;   
+      height: 10px;
+      width: 10px;
+      border-radius: 50%;
+      animation: fall linear infinite;
+    }
+    @keyframes fall{
+      from{
+        transform: translateY(0);
+      }
+      to{
+        transform: translateY(100vh);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1 style="font-size: 60px; text-align: center;
+  color: #ffffff;
+  
+  /* Multi-color glow */
+  text-shadow: 
+    0 0 5px #00ffcc,
+    0 0 10px #00ffcc,
+    0 0 20px #00ffcc,
+    0 0 40px #00ffcc,
+    0 0 80px #00ffcc,
+    0 0 100px #00ffcc;
+
+  ">Happy Eid Mubarak<br>عید مبارک آپ کو  </h1>
+      </div>
+      <div class="col-12" style="display: none;">
+        <p style="font-size: 28px;
+  color: #ffffff;
+  text-align: center;
+
+  /* New glow color (gold + pink mix) */
+  text-shadow: 
+    0 0 5px #ffcc00,
+    0 0 10px #ffcc00,
+    0 0 20px #ff66cc,
+    0 0 40px #ff66cc,
+    0 0 60px #ffcc00;
+
+  animation: glowPara 2s ease-in-out infinite alternate;"id="myText"> Eid Mubarak! May this joyous occasion fill your life with endless happiness, peace, and success. May Allah bless you with strength, patience, and countless opportunities to grow and achieve your dreams. On this special day, may your heart be filled with gratitude, your home with laughter, and your life with love and positivity. Let us take this moment to spread kindness, forgive past mistakes, and cherish the beautiful bonds we share with our family and friends. May your prayers be answered, your sacrifices be appreciated, and your faith be rewarded with blessings beyond imagination. Wishing you a wonderful Eid full of smiles, warmth, and unforgettable moments.</p>
+      </div>
+      <div class="col-12">
+        <div id="textBox" style="font-size: 28px;
+  color: #ffffff;
+  text-align: center;
+
+  /* New glow color (gold + pink mix) */
+  text-shadow: 
+    0 0 5px #ffcc00,
+    0 0 10px #ffcc00,
+    0 0 20px #ff66cc,
+    0 0 40px #ff66cc,
+    0 0 60px #ffcc00;
+
+  animation: glowPara 2s ease-in-out infinite alternate;"></div>
+      </div>
+      <div class="col-12 text-center">
+         <button type="button" class="btn btn-success"onclick="speakDiv()">Success</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="rain"></div>
+
+<script>
+  const rain = document.querySelector('.rain');
+
+  function createDrop(){
+    const drop = document.createElement('div');
+    drop.classList.add('drop');
+    drop.style.left = Math.random() * window.innerWidth + 'px';
+    const colors = ['red','blue','yellow','green','cyan','pink','orange'];
+    drop.style.background = colors[Math.floor(Math.random() * colors.length)];
+    drop.style.animationDuration = (Math.random() * 2 + 1) + 's';
+   rain.appendChild(drop);
+   setTimeout(() => {
+      drop.remove();
+    }, 3000);
+  }
+
+  setInterval(createDrop, 10);
+</script>
+
+<script>
+let text = "Eid Mubarak! May this joyous occasion fill your life with endless happiness, peace, and success. May Allah bless you with strength, patience, and countless opportunities to grow and achieve your dreams. On this special day, may your heart be filled with gratitude, your home with laughter, and your life with love and positivity. Let us take this moment to spread kindness, forgive past mistakes, and cherish the beautiful bonds we share with our family and friends. May your prayers be answered, your sacrifices be appreciated, and your faith be rewarded with blessings beyond imagination. Wishing you a wonderful Eid full of smiles, warmth, and unforgettable moments.";
+let i = 0;
+
+function typeAndSpeak() {
+    if (i < text.length) {
+        let currentText = text.substring(0, i + 1);
+        document.getElementById("textBox").innerText = currentText;
+
+        i++;
+        setTimeout(typeAndSpeak, 100);
+    } else {
+        
+        let speech = new SpeechSynthesisUtterance(text);
+        speech.lang = "hi-IN";
+        window.speechSynthesis.speak(speech);
+    }
+}
+
+typeAndSpeak();
+
+
+</script>
+<script>
+function speakDiv() {
+    let text = document.getElementById("myText").innerText;
+
+    let speech = new SpeechSynthesisUtterance();
+    speech.text = text;
+    speech.lang = "en-US"; 
+
+    window.speechSynthesis.speak(speech);
+}
+</script>
+
+</body>
+</html>
